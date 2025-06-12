@@ -1,0 +1,7 @@
+streamlit
+ultralytics==8.1.0
+torch
+pillow
+pandas
+matplotlib
+opencv-python-headless
