@@ -31,14 +31,6 @@ name_map = {
     "amla tree": "amla",
     "coconut tree": "coconut"
 }
-name_map = {
-    "pine tree": "pine",
-    "mango tree": "mango",
-    "neem tree": "neem",
-    "banyan tree": "banyan",
-    "amla tree": "amla",
-    "coconut tree": "coconut"
-}
 
 
 # Streamlit UI
