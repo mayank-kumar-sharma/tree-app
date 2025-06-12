@@ -9,8 +9,8 @@ import matplotlib.pyplot as plt
 import tempfile
 
 # Load models
-detection_model = YOLO("C:/Users/Mayank kumar/Downloads/best (1).pt")
-classification_model = YOLO("C:/Users/Mayank kumar/Downloads/best (2).pt")
+detection_model = YOLO("best (1).pt")
+classification_model = YOLO("best (2).pt")
 
 # Carbon map
 carbon_map = {
