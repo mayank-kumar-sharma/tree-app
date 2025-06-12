@@ -1,5 +1,5 @@
 streamlit
-ultralytics==8.0.20
+ultralytics==8.1.0
 torch>=1.8.0
 pillow
 pandas
