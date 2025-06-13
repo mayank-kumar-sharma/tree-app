@@ -70,16 +70,17 @@ if uploaded_file is not None:
         class_idx = classification_result.probs.top1
         class_name = classification_result.names[class_idx]
 
-        carbon_value = carbon_map.get(class_name.lower(), 20)
+        simple_name = name_map.get(class_name.lower(), "others")
+        carbon_value = carbon_map.get(simple_name, 20)
         carbon_total += carbon_value
-        classified_classes.append(class_name)
+        classified_classes.append(simple_name)  # ✅ "neem", "amla", etc.
 
         st.write(f"🌲 Tree {i+1}: **{class_name}** - {carbon_value} kg CO₂/year")
 
     # Pie chart
     class_counts = defaultdict(int)
     for cls in classified_classes:
-        class_counts[cls.lower()] += 1
+        class_counts[cls] += 1
 
     fig, ax = plt.subplots()
     ax.pie(class_counts.values(), labels=class_counts.keys(), autopct='%1.1f%%')
