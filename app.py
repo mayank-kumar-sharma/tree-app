@@ -54,6 +54,9 @@ if uploaded_file is not None:
     print("Image saved to:", temp_path)
     image = cv2.imread(temp_path)
     st.image(image, caption="Uploaded Image", use_column_width=True)
+    import os
+        print("TEMP PATH:", temp_path)
+        print("File exists?", os.path.exists(temp_path))
     results = detection_model(temp_path)[0]
     boxes = results.boxes.xyxy.cpu().numpy().astype(int)
 
