@@ -96,4 +96,6 @@ if uploaded_file is not None:
 
     st.markdown("---")
     st.caption("Made with ❤️ using Streamlit and YOLOv8")
+    st.markdown("<hr style='margin-top: 50px;'>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: grey;'>Made with ❤️ by <strong>Mayank Kumar Sharma</strong></p>", unsafe_allow_html=True)
 
