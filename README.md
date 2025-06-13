@@ -9,6 +9,8 @@ This Streamlit app allows users to upload aerial or landscape images containing 
 ## 🚀 Try the App
 **Live demo**: [Click to Launch App](https://tree-app-aca5n5qupcbngzstflzi7y.streamlit.app/)
 
+> ⚠️ Note: The app may take 15–30 seconds to load if it's been asleep.
+
 ---
 
 ## 🧠 How It Works
