@@ -1,8 +1,8 @@
-import torch
-from torch.serialization import add_safe_globals
-from ultralytics.nn.tasks import DetectionModel, ClassificationModel
+#import torch
+#from torch.serialization import add_safe_globals
+#from ultralytics.nn.tasks import DetectionModel, ClassificationModel
 
-add_safe_globals([DetectionModel, ClassificationModel])
+#add_safe_globals([DetectionModel, ClassificationModel])
 import streamlit as st
 from ultralytics import YOLO
 import cv2
