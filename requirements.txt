@@ -4,4 +4,4 @@ torch==2.1.0
 pillow
 opencv-python-headless
 pandas
-numpy
+numpy<2
