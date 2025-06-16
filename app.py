@@ -7,6 +7,7 @@ import numpy as np
 from collections import defaultdict
 import matplotlib.pyplot as plt
 import tempfile
+import csv
 
 # Load models
 detection_model = YOLO("detection.pt")
@@ -46,7 +47,7 @@ st.title("🌳 Tree Detection, Classification & Carbon Estimation")
 st.markdown("Upload an image containing **trees**, and the app will:")
 st.markdown("- 🔍 Detect each tree\n- 🏷️ Classify the species\n- 🌱 Estimate yearly CO₂ sequestration")
 
-uploaded_file = st.file_uploader("📤 Upload Image", type=["jpg", "jpeg", "png"])
+uploaded_file = st.file_uploader("📄 Upload Image", type=["jpg", "jpeg", "png"])
 if uploaded_file is not None:
     with tempfile.NamedTemporaryFile(delete=False, suffix=".jpg") as temp_file:
         temp_file.write(uploaded_file.read())
@@ -62,22 +63,37 @@ if uploaded_file is not None:
         classified_classes = []
         carbon_total = 0
 
-        for i, box in enumerate(boxes):
-            x1, y1, x2, y2 = box
-            cropped = image[y1:y2, x1:x2]
-            cropped_path = f"temp_crop_{i}.jpg"
-            cv2.imwrite(cropped_path, cropped)
+        # Create CSV
+        with open("tree_carbon_report.csv", "w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow(["Tree Number", "Species", "Width (px)", "Height (px)", "Carbon (kg/year)"])
 
-            classification_result = classification_model(cropped_path)[0]
-            class_idx = classification_result.probs.top1
-            class_name = classification_result.names[class_idx]
+            for i, box in enumerate(boxes):
+                x1, y1, x2, y2 = box
+                cropped = image[y1:y2, x1:x2]
+                cropped_path = f"temp_crop_{i}.jpg"
+                cv2.imwrite(cropped_path, cropped)
 
-            simple_name = name_map.get(class_name.lower(), "others")
-            carbon_value = carbon_map.get(simple_name, 20)
-            carbon_total += carbon_value
-            classified_classes.append(simple_name)
+                classification_result = classification_model(cropped_path)[0]
+                class_idx = classification_result.probs.top1
+                class_name = classification_result.names[class_idx]
 
-            st.info(f"🌲 **Tree {i+1}**: `{class_name}` → {carbon_value} kg CO₂/year")
+                width = x2 - x1
+                height = y2 - y1
+
+                simple_name = name_map.get(class_name.lower(), "others")
+                carbon_value = carbon_map.get(simple_name, 20)
+                carbon_total += carbon_value
+                classified_classes.append(simple_name)
+
+                st.info(
+                    f"🌲 **Tree {i+1}**:\n"
+                    f"- Species: `{class_name}`\n"
+                    f"- Size: `{width}px × {height}px`\n"
+                    f"- Carbon: `{carbon_value} kg CO₂/year`"
+                )
+
+                writer.writerow([i + 1, class_name, width, height, carbon_value])
 
     # Pie chart
     class_counts = defaultdict(int)
@@ -95,7 +111,10 @@ if uploaded_file is not None:
     st.success(f"🌍 **Total Estimated CO₂ Sequestration**: {carbon_total:.2f} kg/year")
 
     st.markdown("---")
+    st.download_button("📃 Download CSV Report", data=open("tree_carbon_report.csv", "rb"), file_name="tree_carbon_report.csv")
+
     st.caption("Made with ❤️ using Streamlit and YOLOv8")
     st.markdown("<hr style='margin-top: 50px;'>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center; color: grey;'>Made with ❤️ by <strong>Mayank Kumar Sharma</strong></p>", unsafe_allow_html=True)
+
 
